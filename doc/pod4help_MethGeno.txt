@@ -2,15 +2,15 @@
 
 =head1 NAME
 
-ChIPseqBioinforCore onestop - Default analysis for processing ChIP-seq data.
+ViewBS MethGeno - Generate methylation information across chromosome.
 
 =head1 VERSION
 
-0.0
+v0.0.0
 
 =head1 SYNOPSIS
 
-perl ChIPseqBioinforCore_vx.x.x.pl onestop 
+ViewBS MethGeno
 --project_dir directory to store the results
 --data_dir directory for data 
 --reference ref_index 
