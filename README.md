@@ -9,6 +9,7 @@
 * Bio::DB::HTS::Tabix
 
 4. R packages
+   ggplot2, 
 5. 
 
 
