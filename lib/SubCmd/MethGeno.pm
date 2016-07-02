@@ -7,6 +7,8 @@ use FindBin;
 use Pod::Usage;
 use Cwd qw(abs_path);
 
+use Meth::Geno;
+
 ## class, $opts, $opts_sub
 sub new{
     my $class     = shift;
@@ -18,7 +20,7 @@ sub check_para_sub{
     my ($class, $opts_sub, $opts) = @_;
 
     if($opts->{help}){
-        pod2usage(-exitval => 1, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethGeno.txt");
+        pod2usage(-exitval => 0, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethGeno.txt");
         exit 0;
     }
 
@@ -29,17 +31,16 @@ sub check_para_sub{
     }
 
     my $exit_code = 0;
-    if(!$opts_sub->{"genome"}){
-        print "Please provide --genome!!!\n";
+    if(!$opts_sub->{"genomeLength"}){
+        print "Please provide --genomeLength!!!\n";
         ++$exit_code; #exit 0;
     }else{
-       $opts_sub->{"genome"} = abs_path $opts_sub->{"genome"};
-       if(-e "$opts_sub->{project_dir}.fai"){
-	    print "No fai file was found\n\nPlease use samtools to generate the fai file.\n";
-	    ++$exit_code;
-       }else{
-	    print "Genome fai detected.\n";
-       }
+       $opts_sub->{"genomeLength"} = abs_path $opts_sub->{"genomeLength"};
+    }
+
+    if(!$opts_sub->{"prefix"}){
+        print "Please provide --prefix for your output file!!!\n";
+        ++$exit_code; #exit 0;
     }
 
     # window size 
@@ -51,18 +52,14 @@ sub check_para_sub{
     if(!$opts_sub->{"step"}){
         $opts_sub->{"step"} = 500000;
     }
-    
-    if(!$opts_sub->{"stetp"}){
-        $opts_sub->{"step"} = 500000;
+   
+    ## output directory  
+    if(!$opts_sub->{"outdir"}){
+        $opts_sub->{"outdir"} = "./";
     }
 
-    if(!$opts_sub->{"context"}){
-        $opts_sub->{"context"} = "CpG";
-    }
-
-    #core_num
-    if(!$opts_sub->{"core_num"}){
-            $opts_sub->{"core_num"} = 1;
+    if(!@{$opts_sub->{"context"}}){
+        push @{$opts_sub->{"context"}}, "CG";
     }
 
     if($exit_code > 0){
@@ -78,7 +75,11 @@ sub check_para{
     my $num = 0;
     foreach(values %$opts){
         if(defined $_){
-            $def ++;
+	    ## if one argument can be used multiple times. Even if you don't provide the argument, the value would be an reference to an array.
+	    if(!/ARRAY/ || @{$_}){
+		#print "Value\t@{$_}\n";
+                $def ++;
+	    }
         }
         ++$num;
     }
@@ -90,12 +91,11 @@ sub check_para{
 }
 
 
-sub run_onestop{
-    
-    my ($class, $opts_sub, $opts) = @_;
-    
-    #create the directory for 
-
+sub run_methGeno{ 
+    my ($class, $opts_sub) = @_;
+    my $meth_geno = Meth::Geno->new(); 
+    $meth_geno -> calMeth($opts_sub);
+    $meth_geno -> drawMeth($opts_sub);
 }
 
 1;

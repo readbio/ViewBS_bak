@@ -24,7 +24,7 @@ Onestop will help you process ChIP-seq data from the raw sequencde
 data, including default deconseq step, cutadapt step and mapping step, as well
 as calling peaks using SICER, calling diff-peaks using SICER-df. 
 
-=head1 Options
+=head1 Required arguments
 
 =over 8
 
@@ -32,88 +32,32 @@ as calling peaks using SICER, calling diff-peaks using SICER-df.
 
  - Prints the help message and exists.
 
-=item B<project_dir [required]>
+=item B<--verbose>
+   
+ - 
 
- - Provide the data for output
+=item B<genomeLength [required]>
 
-=item B<data_dir [required]>
+ - chromosome length information. Can be generated using 'samtools faidx
+   ref.fa'
 
- - Provide the data for input data
+=item B<sample [required]>
 
-=item B<reference [required]>
+ - Provide the sample information. [Format: methlationfile,samplename]
+
+=item B<refere>
 
  - Provide the information for bowtie2 index
 
-=item B<fastq_surfix>
-
- - The surfix for fastq files [fq, fq.gz, fastq, fastq.gz]. READ1 should be
-   named as "*_1.FASTQ_SURFIX". READ2 should be named as "*_2.FASTQ_SURFIX".
-   For COMPRESSED files, this pipelines only take "gzip"ped files. 
-   Default: fq
-
-=item B<queue>
-
- - Queue you want to use. [Default: bioinf-b on hansen]
-
-=item B<core_num>
-
- - CPU cores you want to use. [default number: 1]
-
-=item B<SICER [not required]>
-
- - If you provide this parameter, indicates that you want to call peaks using
-   SICER.
-   NO space is allowed.Input should be concatenated using comma "," in 
-   specific order shown as below:
-
-   <pairlist,Species,Redundancy_threshold,Win_size[bp],Fragment_size,Effective
-   _genome_fraction,Gap_size,FDR>
-
-   Please see SICER manual for detailed information.
-   
-   Pair list should follow specific format. You can write comment lines
-   startting with #.  The file should be space-delimited (tab preferred). 
-   For each column, NO space is allowed.
-   | Column 1 |  Column 2   | Column 3 | Column 4|
-   | Tissue   | HisMod Type |     IP   |  Input  |
-
-   The first column could be tissue, genotype, etc. It's OK as long as the
-   conbination of first and second column is unique.
-
-=item B<SICER2DiffBind [not required]>
-
-  - If you provide this parameter, indicates that you want to call peaks using
-   DiffBind. <SICER> has to be provided. 
-
-=item B<SICERdf [not required]>
-
- - If you provide this parameter, indicates that you want to call differential 
-   peaks using SICER-df. 
-   NO space is allowed. Input should be concatenated using comma "," in 
-   specific order shown as below:
-   <window_size>,<gap_size>,<FDR_for_KO_vs_KOCONTROL_or_WT_vs_WTCONTROL>,
-   <FDR_for_WT_vs_KO>,<Species><Redundancy_threshold>
-
-   Please see SICER manual for detailed information.
-
-   Pair list should follow specific format. You can write comment lines startting
-   with #. The file should be space-delimited (tab preferred). For each column, 
-   NO space is allowed. 
-   
-   | Column 1 |  Column 2   | Column 3 | Column 4 | Column 3 | Column 4 |
-   | Tissue   | HisMod Type |  KO_IP   | KO_Input |  WT_IP   | WT_Input |
-
-   The first column could be tissue, genotype, etc. It's OK as long as the
-   conbination of first and second column is unique.
-
 =back
 
-=head1 AUTHOR
+=head1 DISCUSSION FORUM
 
-Shaojun Xie, C<< <xie186_at_purdue.edu> >>
-
+Recent changes, bug fixes and feature additions will be announced through this
+Google discussion group: ViewBS discussion forum. Users are encouraged to
+ask questions through this forum (instead of shooting me emails) so that the
+answers can be shared. If you are interested, you can sign up to receive
+updates through E-mails.
 =head1 Affiliation
-
-Bioinformatics Core, Purdue University
 
 =cut
