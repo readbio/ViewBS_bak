@@ -58,7 +58,7 @@ sub generTab{
                          if($end > $rec_geno_len{$chrom} && ($end - $rec_geno_len{$chrom})/$win < 0.5){
                             next;  #
                          }
-		         my ($c_num, $t_num) = &get_CT_num($class, $meth_file, $chrom, $stt, $end, $context);
+		         my ($c_num, $t_num) = &get_CT_num($class, $meth_file, $chrom, $stt, $end, $context, $opts_sub);
                          my $level = $c_num/($c_num + $t_num + 0.000000001);
                          print OUT "$chrom\t$stt\t$end\t$sam_name\t$c_num\t$t_num\t$level\n";
                     }
@@ -68,14 +68,15 @@ sub generTab{
 }
 
 sub get_CT_num{
-    my ($class, $meth_file, $chrom, $stt, $end, $context) = @_;
+    my ($class, $meth_file, $chrom, $stt, $end, $context, $opts_sub) = @_;
     my $tabix = Bio::DB::HTS::Tabix->new( filename => $meth_file);
     my $iter = $tabix->query("$chrom:$stt-$end");
     my ($tot_c_num, $tot_t_num) = (0, 0);
     while ( my $line = $iter->next) {
 	#chrC    13      +       3       643     CG      CGG
         my ($chr, $pos, $strand, $c_num, $t_num, $tem_context, $seq) = split(/\t/, $line);
-	if($context eq $tem_context){
+	if($context eq $tem_context || $context eq "CXX"){
+	    next if ($c_num + $t_num < $opts_sub->{minDepth} || $c_num + $t_num > $opts_sub->{maxDepth});
 	    $tot_c_num += $c_num;
 	    $tot_t_num += $t_num;
 	}

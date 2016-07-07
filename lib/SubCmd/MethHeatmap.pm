@@ -1,4 +1,4 @@
-package SubCmd::MethGeno;
+package SubCmd::MethHeatmap;
 
 use strict;
 use warnings;
@@ -7,7 +7,7 @@ use FindBin;
 use Pod::Usage;
 use Cwd qw(abs_path);
 
-use Meth::Geno;
+use Meth::Heatmap;
 
 ## class, $opts, $opts_sub
 sub new{
@@ -20,22 +20,31 @@ sub check_para_sub{
     my ($class, $opts_sub, $opts) = @_;
 
     if($opts->{help}){
-        pod2usage(-exitval => 0, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethGeno.txt");
+        pod2usage(-exitval => 0, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethHeatmap.txt");
         exit 0;
     }
 
     if(!&check_para($class, $opts_sub)){
         print "Please provide parameters\n";
-        pod2usage(-exitval => 1, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethGeno.txt");
+        pod2usage(-exitval => 1, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethHeatmap.txt");
         exit 0;
     }
 
     my $exit_code = 0;
-    if(!$opts_sub->{"genomeLength"}){
-        print "Please provide --genomeLength!!!\n";
+
+    if(!@{$opts_sub->{"sample"}}){
+	print "Please provide --sample!\n";
+	++$exit_code; #exit 0;
+    }else{
+	
+    }
+
+    if(!$opts_sub->{"region"}){
+        print "Please provide --region!\n";
         ++$exit_code; #exit 0;
     }else{
-       $opts_sub->{"genomeLength"} = abs_path $opts_sub->{"genomeLength"};
+	print "$opts_sub->{region}\n";
+       $opts_sub->{"region"} = abs_path $opts_sub->{"region"};
     }
 
     if(!$opts_sub->{"prefix"}){
@@ -43,31 +52,23 @@ sub check_para_sub{
         ++$exit_code; #exit 0;
     }
 
-    # window size 
-    if(!$opts_sub->{"win"}){
-        $opts_sub->{"win"} = 500000;
+    # minDepth for DNA methylation data
+    if(!$opts_sub->{"minDepth"}){
+        $opts_sub->{"minDepth"} = 3;
     }
    
-    # step size
-    if(!$opts_sub->{"step"}){
-        $opts_sub->{"step"} = 500000;
+    # maxDepth for DNA methylation data
+    if(!$opts_sub->{"maxDepth"}){
+        $opts_sub->{"maxDepth"} = 400;
     }
-   
+
     ## output directory  
     if(!$opts_sub->{"outdir"}){
         $opts_sub->{"outdir"} = "./";
     }
-
+    print "xxx\t@{$opts_sub->{context}}\n";
     if(!@{$opts_sub->{"context"}}){
         push @{$opts_sub->{"context"}}, "CG";
-    }
-
-    if(!$opts_sub->{"minDepth"}){
-        $opts_sub->{"minDepth"} = 3;
-    }
-
-    if(!$opts_sub->{"maxDepth"}){
-        $opts_sub->{"maxDepth"} = 400;
     }
 
     if($exit_code > 0){
@@ -91,7 +92,6 @@ sub check_para{
         }
         ++$num;
     }
-
     if($def == 0){
         return 0;   ## No parameter was provide!
     }else{
@@ -100,9 +100,9 @@ sub check_para{
 }
 
 
-sub run_methGeno{ 
+sub run_methHeatmap{ 
     my ($class, $opts_sub) = @_;
-    my $meth_geno = Meth::Geno->new(); 
+    my $meth_geno = Meth::Heatmap->new(); 
     $meth_geno -> calMeth($opts_sub);
     $meth_geno -> drawMeth($opts_sub);
 }

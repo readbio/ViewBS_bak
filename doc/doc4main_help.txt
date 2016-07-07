@@ -7,7 +7,7 @@ ViewBS - Tools for exploring and visualizing deep sequencing of  bisulfite
 
 =head1 VERSION
 
-0.0.0
+0.2.0
 
 =head1 SYNOPSIS
 

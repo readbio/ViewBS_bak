@@ -1,4 +1,4 @@
-package SubCmd::MethGeno;
+package SubCmd::MethOverRegion;
 
 use strict;
 use warnings;
@@ -7,7 +7,7 @@ use FindBin;
 use Pod::Usage;
 use Cwd qw(abs_path);
 
-use Meth::Geno;
+use Meth::OverRegion;
 
 ## class, $opts, $opts_sub
 sub new{
@@ -20,22 +20,31 @@ sub check_para_sub{
     my ($class, $opts_sub, $opts) = @_;
 
     if($opts->{help}){
-        pod2usage(-exitval => 0, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethGeno.txt");
+        pod2usage(-exitval => 0, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethOverRegion.txt");
         exit 0;
     }
 
     if(!&check_para($class, $opts_sub)){
         print "Please provide parameters\n";
-        pod2usage(-exitval => 1, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethGeno.txt");
+        pod2usage(-exitval => 1, -verbose => 2, -input => "$FindBin::Bin/doc/pod4help_MethOverRegion.txt");
         exit 0;
     }
 
     my $exit_code = 0;
-    if(!$opts_sub->{"genomeLength"}){
-        print "Please provide --genomeLength!!!\n";
+
+    if(!@{$opts_sub->{"sample"}}){
+	print "Please provide --sample!\n";
+	++$exit_code; #exit 0;
+    }else{
+	
+    }
+
+    if(!$opts_sub->{"region"}){
+        print "Please provide --region!\n";
         ++$exit_code; #exit 0;
     }else{
-       $opts_sub->{"genomeLength"} = abs_path $opts_sub->{"genomeLength"};
+	print "$opts_sub->{region}\n";
+       $opts_sub->{"region"} = abs_path $opts_sub->{"region"};
     }
 
     if(!$opts_sub->{"prefix"}){
@@ -43,16 +52,29 @@ sub check_para_sub{
         ++$exit_code; #exit 0;
     }
 
-    # window size 
-    if(!$opts_sub->{"win"}){
-        $opts_sub->{"win"} = 500000;
+    #flank regions
+    if(!$opts_sub->{"flank"}){
+        $opts_sub->{"flank"} = 2000;
+    }
+    # binLength
+    if(!$opts_sub->{"binLength"}){
+        $opts_sub->{"binLength"} = 100;
     }
    
-    # step size
-    if(!$opts_sub->{"step"}){
-        $opts_sub->{"step"} = 500000;
+    # binNumber
+    if(!$opts_sub->{"binNumber"}){
+        $opts_sub->{"binNumber"} = 60;
     }
    
+    # minLength
+    if(!$opts_sub->{"minLength"}){
+        $opts_sub->{"minLength"} = 300;
+    }
+
+    # maxLength
+    if(!$opts_sub->{"maxLength"}){
+        $opts_sub->{"maxLength"} = 5000000;
+    }
     ## output directory  
     if(!$opts_sub->{"outdir"}){
         $opts_sub->{"outdir"} = "./";
@@ -69,7 +91,7 @@ sub check_para_sub{
     if(!$opts_sub->{"maxDepth"}){
         $opts_sub->{"maxDepth"} = 400;
     }
-
+ 
     if($exit_code > 0){
         exit 0;
     }else{
@@ -91,7 +113,6 @@ sub check_para{
         }
         ++$num;
     }
-
     if($def == 0){
         return 0;   ## No parameter was provide!
     }else{
@@ -100,11 +121,11 @@ sub check_para{
 }
 
 
-sub run_methGeno{ 
+sub run_methOverRegion{ 
     my ($class, $opts_sub) = @_;
-    my $meth_geno = Meth::Geno->new(); 
+    my $meth_geno = Meth::OverRegion->new(); 
     $meth_geno -> calMeth($opts_sub);
-    $meth_geno -> drawMeth($opts_sub);
+    #$meth_geno -> drawMeth($opts_sub);
 }
 
 1;
