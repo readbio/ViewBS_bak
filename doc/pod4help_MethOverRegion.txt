@@ -7,19 +7,14 @@ regions.
 
 =head1 SYNOPSIS
 
-ViewBS MethGeno
---project_dir directory to store the results
---data_dir directory for data 
---reference ref_index 
---fastq_surfix fq 
---core_num 10 
---SICER pair_list,...
+ViewBS MethOverRegion --region <region> 
+--sample <meth,sample_name> [--sample <meth,sample_name> .......]
+--prefix <prefix for output>
 
 =head1 DESCRIPTION
 
-Onestop will help you process ChIP-seq data from the raw sequencde
-data, including default deconseq step, cutadapt step and mapping step, as well
-as calling peaks using SICER, calling diff-peaks using SICER-df. 
+MethOverRegion will calculate DNA methylation information across the provide
+regions, genes, transposable elements, etc. 
 
 =head1 Required arguments
 
@@ -31,20 +26,21 @@ as calling peaks using SICER, calling diff-peaks using SICER-df.
 
 =item B<--verbose>
    
- - 
+=item B<region [required]>
 
-=item B<genomeLength [required]>
-
- - chromosome length information. Can be generated using 'samtools faidx
-   ref.fa'
+ - regions you want to investigate. 
 
 =item B<sample [required]>
 
- - Provide the sample information. [Format: methlationfile,samplename]
+ - Provide the sample information. [Format: methlationfile,samplename] 
+   It is possible to specify more than one sample pair by using the options 
+   --sample more than once. The methylation information can also be read from
+   a TEXT file. Instead of giving an explicit sample information pairs, 
+   you need to write file: followed by the name of the TEXT file.
 
-=item B<refere>
+=item B<prefix [required]>
 
- - Provide the information for bowtie2 index
+ - Provide prefix for the output file.
 
 =back
 
@@ -55,6 +51,9 @@ Google discussion group: ViewBS discussion forum. Users are encouraged to
 ask questions through this forum (instead of shooting me emails) so that the
 answers can be shared. If you are interested, you can sign up to receive
 updates through E-mails.
+
 =head1 Affiliation
+
+
 
 =cut

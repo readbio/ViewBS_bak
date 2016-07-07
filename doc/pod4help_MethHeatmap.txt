@@ -2,17 +2,14 @@
 
 =head1 NAME
 
-ViewBS MethGeno - Generate methylation information across chromosome.
-
-=head1 VERSION
-
-v0.0.0
+ViewBS MethHeatmap - Generate methylation for each region and each sample to
+make heatmap.
 
 =head1 SYNOPSIS
 
-ViewBS MethGeno
---project_dir directory to store the results
---data_dir directory for data 
+ViewBS MethHeatmap
+--region <region>
+--sample <methlation information,sample_name> [--sample <methlation information,sample_name>]
 --reference ref_index 
 --fastq_surfix fq 
 --core_num 10 
