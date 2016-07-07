@@ -10,10 +10,7 @@ make heatmap.
 ViewBS MethHeatmap
 --region <region>
 --sample <methlation information,sample_name> [--sample <methlation information,sample_name>]
---reference ref_index 
---fastq_surfix fq 
---core_num 10 
---SICER pair_list,...
+--prefix <prefix for output file>
 
 =head1 DESCRIPTION
 
@@ -29,22 +26,25 @@ as calling peaks using SICER, calling diff-peaks using SICER-df.
 
  - Prints the help message and exists.
 
-=item B<--verbose>
+=item B<verbose>
    
- - 
+ - Suppress extended information or not. [Default: TRUE]
 
-=item B<genomeLength [required]>
+=item B<region [required]>
 
- - chromosome length information. Can be generated using 'samtools faidx
-   ref.fa'
+ - regions you want to investigate. 
 
 =item B<sample [required]>
 
- - Provide the sample information. [Format: methlationfile,samplename]
+ - Provide the sample information. [Format: methlationfile,samplename] 
+   It is possible to specify more than one sample pair by using the options 
+   --sample more than once. The methylation information can also be read from
+   a TEXT file. Instead of giving an explicit sample information pairs, 
+   you need to write file: followed by the name of the TEXT file.
 
-=item B<refere>
+=item B<prefix [required]>
 
- - Provide the information for bowtie2 index
+ - Provide prefix for the output file.
 
 =back
 
