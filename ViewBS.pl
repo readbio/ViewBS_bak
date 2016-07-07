@@ -1,10 +1,9 @@
 #!/usr/bin/perl -w
 
-############################################################
-#                                                          #
-#                                                          
-#                                                          #
-############################################################
+#################################################################
+# This toolkits are developped to analyze and visualize bisulfite
+# sequencing data.                                          
+#################################################################
 
 use strict;
 use Getopt::Long::Subcommand;
@@ -78,7 +77,6 @@ print "Running time:",timestr($td),"\n";
 
 sub processCMD{
     $resOpt = GetOptions(   # Return hash structure, with these keys: success, subcommand (array of str)
-
         ## common options recognized by all subcommands
         options => {
 	    'help|h|?'    => \$opts{help},
